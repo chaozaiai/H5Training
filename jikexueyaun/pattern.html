@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	
+</head>
+<style type="text/css">
+	.left{
+		border: 1px solid #444;
+		height: 1200px;
+	}
+	.right{
+		border: 1px solid #999;
+	}
+	body{
+		height: 100%;
+	}
+
+</style>
+<!-- <script type="text/javascript">
+	$(function(){
+		var pageSize =  window.session
+		$("a[class='current']").click(function(event) {
+		/* Act on the event */
+		alert("text");
+	});
+	})
+	$(".current").click(function(){
+		alert("text");
+	});
+	$(".licurrent").click(function(){
+		alert("text");
+	});
+	
+	
+</script> -->
+<script type="text/javascript">
+	
+	function checkData(count){
+		if (check(count)) {
+			alert("123");
+		}
+	}
+
+	function check(count){
+			if (count==1) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+	$(function(){
+
+	})
+</script>
+<body>
+
+	<div style="height: 46px;background-color: #333333;width: 600px" >
+		<input type="button" name="" value="添加" style="height: 32px;background-color: #cccccc;vertical-align: middle;margin-top: 7px;">
+	</div>
+	<!-- <button class="button01" style="display: block;" onclick="checkData(1)" value="01"></button>
+	<button class="button02" style="display: block;" onclick="checkData(2)" value="21"></button>
+	<br/>
+	<div>
+		<input type="number"  name="">
+		<label style="width: 100px">商品图片</label> 
+		<input type="file" name="" style="width: 100px;float: left;">
+	</div> -->
+	
+	<!-- <div class="row" >			
+		<div class="left col-sm-2" style="height: 1200px" >
+			<ul>
+				<li class="licurrent"><a class="current" href="http:www.baidu.com">1</a></li>
+				<li><a href="">2</a></li>
+				<li><a href="">3</a></li>
+				<li><a href="">4</a></li>
+				<li><a href="">5</a></li>
+				<li><label>1234</label></li>
+				<li><label>3415</label></li>
+				<li><a href="">5</a></li>
+			</ul>
+		</div>
+		<div class="right col-sm-7">
+			<div style="width: 200px;height: 200px;">		
+				<div style="width: 200px;height: 200px; position: relative;">
+				<textarea class="reply-content" style="width: 200px;height: 200px;position: relative;"></textarea>				
+				<p style="position: absolute;" id="count">1/100</p>
+							
+				</div>				
+					
+			</div>
+			
+		</div>
+	</div> -->
+</body>
+</html>

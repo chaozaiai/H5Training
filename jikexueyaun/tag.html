@@ -1,0 +1,757 @@
+<!doctype html public "-//w3c//dtd xhtml 1.0 transitional//en"
+        "http://www.w3.org/tr/xhtml1/dtd/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>未上架商品</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <link href="../css/bootstrap-3.2.0/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <link href="../css/bootstrap-box.css" rel="stylesheet" type="text/css"/>
+    <link href="../css/bootstrap-page.css" rel="stylesheet" type="text/css"/>
+    <link href="../css/myStyle.css" rel="stylesheet" type="text/css"/>
+    <link href="../js/validator/jquery.validator.css" rel="stylesheet" type="text/css"/>
+    <link href="../js/datapacker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="../js/resizableColumns/jquery.resizableColumns.css">
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/body.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/jquery.fancybox.min.css"/>
+    <script type="text/javascript" src="../js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.fancybox.min.js"></script>
+    <script type="text/javascript" src="../js/resizableColumns/jquery.resizableColumns.js"></script>
+    <script type="text/javascript" src="../js/jsviews.js"></script>
+    <script type="text/javascript" src="../js/loadTmpl.js"></script>
+    <script type="text/javascript" src="../js/base.js"></script>
+    <script type="text/javascript" src="../js/goods/goodsAdd.js"></script>
+    <script type="text/javascript" src="../js/validator/jquery.validator.js"></script>
+    <script type="text/javascript" src="../js/validator/local/zh_CN.js"></script>
+    <script type="text/javascript" src="../js/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="../js/tableGrid/jquery.tableGrid.js"></script>
+    <script type="text/javascript" src="../js/datapacker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="../js/datapacker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../ueditor/textarea.js"></script>
+    <!-- 富文本编辑依赖文件,不用建议删除 -->
+    <script type="text/javascript" charset="utf-8" src="../ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../ueditor/ueditor.all.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../ueditor/lang/zh-cn/zh-cn.js"></script>
+</head>
+<style type="text/css">
+    <!--
+    * {
+        font-size: 14px;
+        font-family: Arial;
+    }
+
+    #nav li {
+        list-style: none;
+        width: 125px;
+        margin-top: 0;
+        padding: 4px 6px;
+    }
+
+    #nav li a {
+        text-decoration: none;
+        color: #666;
+    }
+
+    #nav li a:hover {
+        color: #333;
+    }
+
+    .aa {
+        border-right: 1px solid #AAC7E9;
+        background: #E8F5FE;
+        cursor: hand;
+        border-top: 3px solid #AAC7E9
+    }
+
+    .bb {
+        border: 1px solid #AAC7E9;
+        background: #FFFFDD;
+        cursor: hand;
+        border-top: 3px solid #ff9900;
+    }
+
+    .cc {
+        border-top: 4px solid #ff66ff;
+        background: #fcf;
+        cursor: hand;
+    }
+
+    .list2 {
+        font-size: 13px;
+        line-height: 20px;
+        padding: 3px;
+        text-align: left;
+        background: #FFFFFF;
+    }
+
+    .list2 li {
+        color: #555;
+        font-size: 13px;
+        line-height: 24px;
+        padding: 0 0 0 10px;
+    }
+
+    .list2 a {
+        text-decoration: underline;
+    }
+
+    .lfloat {
+        float: left;
+    }
+
+    .rfloat {
+        float: right;
+    }
+
+    .ctt {
+        padding: 0;
+        clear: both;
+        text-align: left;
+    }
+
+    .dis {
+        display: block;
+    }
+
+    .undis {
+        display: none;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    form, ul {
+        padding: 0;
+        margin: 0;
+    }
+
+    .col-xs-6 {
+        padding-left: 0px;
+        padding-top: 8px;
+    }
+
+    .left-content, .right-content {
+        height: 1000px;
+        border: 1px solid #AAC7E9;
+    }
+
+    .right-content {
+        width: 1000px;
+    }
+
+    -->
+</style>
+<!--div no.1-->
+<!--快速导航栏-->
+<script type="text/javascript" language="javascript">
+    $(function () {
+        fomatmyEditor();
+        //获取类型
+        $.ajax({
+            url: "../cms/baseCategroy/findBaseCategroyList",
+            dataType: 'json',
+            type: 'POST',
+            data: {
+                type: 1
+            },
+            success: function (data) {
+                var getdata = data.object;
+                if (getdata.length > 0) {
+                    var opt = "";
+                    for (var i = 0; i < getdata.length; i++) {
+                        var dataList = getdata[i]
+                        opt += '<option value="' + dataList.tid + '">' + dataList.name + '</option>';
+                    }
+                    $("#_categoryId").append(opt);
+                }
+            }
+        });
+
+
+        $("#_categoryId").change(function () {
+            var categoryId = $("#_categoryId").val();
+            if (categoryId.length > 0) {
+                $.ajax({
+                    url: "../sgsb2/baseCategroy/findBaseCategroySubList",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: {
+                        parentid: $("#_categoryId").val()
+                    },
+                    success: function (data) {
+                        var option = $("<option>").val("").text("请选择");
+                        $("#_subCategoryId").empty();
+                        $("#_subCategoryId").append(option);
+                        var getdata = data.object;
+                        if (getdata) {
+                            var opt = "";
+                            for (var i = 0; i < getdata.length; i++) {
+                                var dataList = getdata[i]
+                                opt += '<option value="' + dataList.tid + '">' + dataList.name + '</option>';
+                            }
+                            $("#_subCategoryId").append(opt);
+                        }
+                    }
+                });
+            } else {
+                var option = $("<option>").val("").text("请选择");
+                $("#_subCategoryId").empty();
+                $("#_subCategoryId").append(option);
+            }
+        });
+
+        /** 图片上传处理预留,有图片上传可打开此注释*/
+        $(document).on('change', '.photoFile', function () {
+            var file_type = $(this).attr("file_type");
+            var uploadType = $(this).attr("upload_type");
+            var _id = $(this).attr("id");
+            var _value = $(this).attr("value");
+            var fileLength = $(this).attr("file_length");
+            var fileSort = $(this).attr("file_sort");
+            $.ajaxFileUpload({
+                url: '../sgsb2/common/uploadFile',
+                fileElementId: _id,
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    fileType: file_type,
+                    uploadType: uploadType,
+                    fileLength: 10
+                },
+                success: function (data, status) {
+                    if (data.code) {
+                        /* 					$("#_photourl"+fileSort).val(data.object.saveImage);
+                                            $("#myImageShow"+fileSort).attr('src',data.object.showImage);
+                                            var goodsvoList = [
+                                                               { tid: '1',photourl: data.object.saveImage, size: '10',photoname: 'abc'}
+                                                           ];
+                                                var tblContentHtml = $("#ContentTmpleList_two").render(goodsvoList);
+                                                $("#mycontentList_two").empty().html(tblContentHtml);		 */
+                        if (fileSort == 1) {
+                            $("#_photourl" + fileSort).val(data.object.saveImage);
+                            $("#myImageShow" + fileSort).attr('src', httpimageUrl() + data.object.saveImage);
+                        } else if (fileSort == 2) {
+                            addTableRowtwo(data.object.saveImage, data.object.imageName, data.object.imageSize);
+                        } else if (fileSort == 3) {
+                            $("#src_1_" + _value).attr('src', httpimageUrl() + data.object.saveImage);
+                            $("#input_1_" + _value).val(data.object.saveImage);
+                        } else if (fileSort == 4) {
+                            addTableRowfour(data.object.saveImage, data.object.imageName, data.object.imageSize);
+                        }
+                    }
+                    else {
+                        alert(data.message);
+                    }
+                },
+                error: function (data, status, e) {
+                    //alert(e);
+                },
+                complete: function () {
+                    /*增加图片弹出框放大预览*/
+                    $(".fancybox-img").fancybox({
+                        type: 'image'
+                    });
+                }
+            });
+        });
+
+
+//点击搜索
+        $("#search").click(function () {
+            var currentModel = sessionStorage.getItem("currentModel");
+            if (currentModel != null) {
+                sessionStorage.removeItem("currentModel");
+            }
+            $("#_click_page").val(0);
+            displayContent();
+        });
+
+
+        $("#saveData").click(function () {
+            var submit_url = "../cms/goods/createGoodsdata";
+            var content = ue.getContent();
+
+            var categoryId = $("#_categoryId").val();
+            if (categoryId.length == 0) {
+                alert("请选择一级分类");
+                return;
+            }
+            var subCategoryId = $("#_subCategoryId").val();
+            if (subCategoryId.length == 0) {
+                alert("请选择二级分类");
+                return;
+            }
+            var goodsName = $("#_goodsName").val();
+            if (goodsName.length == 0 && goodsName.length > 30) {
+                alert("标题不能为空并且不能超出30个字符！");
+                return;
+            }
+
+            var imgUrl1 = $("#_photourl1").val();
+            if (imgUrl1.length == 0) {
+                alert("请上传列表图！");
+                return;
+            }
+
+            var rows = document.getElementById("phototab_two").rows.length; //获得行数(包括thead)
+            if (rows < 2) {
+                alert("商品主图不能为空，至少上传一张。");
+                return;
+            }
+            var imageTwoJson = imgTableToJson("phototab_two");
+
+            var rows = document.getElementById("attributeList").rows.length; //获得行数(包括thead)
+            if (rows < 2) {
+                alert("商品属性值不能为空，至少一个属性。");
+                return;
+            }
+            var attributeJson = attributeTableToJson("attributeList");
+
+            var goodsIntro = $("#_goodsintro").val();
+            if (goodsIntro.length == 0) {
+                alert("标题不能为空");
+                return;
+            }
+
+            var rows = document.getElementById("phototab_four").rows.length; //获得行数(包括thead)
+            if (rows < 2) {
+                alert("图文详情不能为空，至少上传一张。。");
+                return;
+            }
+            var imageFourJson = imgTableToJson("phototab_four");
+            if (content.length == 0) {
+                alert("正文内容不能为空");
+                return;
+            }
+            if (content.length > 10000) {
+                alert("正文内容已超出10000个字符！");
+                return;
+            }
+            $.ajax({
+                url: submit_url,
+                type: "POST",
+                data: {
+                    categoryId: categoryId,
+                    subCategoryId: subCategoryId,
+                    goodsName: goodsName,
+                    thumbnailImage: imgUrl1,
+                    specification: content,
+                    details: goodsIntro,
+                    saveStatus: 0,
+                    imageTwoJson: imageTwoJson,
+                    imageFourJson: imageFourJson,
+                    attributeJson: attributeJson,
+                    tid: null
+                },
+                success: function (data) {
+                    if (data.code == 1) {
+                        alert(data.message);
+                        $("#tid").val(data.object.tid);
+                        var url = "goodsPutOffList.html";
+                        window.location.href = url;
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            });
+        });
+
+        $("#releaseData").click(function () {
+            var submit_url = "../cms/goods/createGoodsdata";
+            var content = ue.getContent();
+
+            var categoryId = $("#_categoryId").val();
+            if (categoryId.length == 0) {
+                alert("请选择一级分类");
+                return;
+            }
+            var subCategoryId = $("#_subCategoryId").val();
+            if (subCategoryId.length == 0) {
+                alert("请选择二级分类");
+                return;
+            }
+            var goodsName = $("#_goodsName").val();
+            if (goodsName.length == 0 && goodsName.length > 30) {
+                alert("标题不能为空并且不能超出30个字符！");
+                return;
+            }
+
+            var imgUrl1 = $("#_photourl1").val();
+            if (imgUrl1.length == 0) {
+                alert("请上传列表图！");
+                return;
+            }
+
+            var rows = document.getElementById("phototab_two").rows.length; //获得行数(包括thead)
+            if (rows < 2) {
+                alert("商品主图不能为空，至少上传一张。");
+                return;
+            }
+            var imageTwoJson = imgTableToJson("phototab_two");
+
+            var rows = document.getElementById("attributeList").rows.length; //获得行数(包括thead)
+            if (rows < 2) {
+                alert("商品属性值不能为空，至少一个属性。");
+                return;
+            }
+            var attributeJson = attributeTableToJson("attributeList");
+            var goodsIntro = $("#_goodsintro").val();
+            if (goodsIntro.length == 0) {
+                alert("标题不能为空");
+                return;
+            }
+
+            var rows = document.getElementById("phototab_four").rows.length; //获得行数(包括thead)
+            if (rows < 2) {
+                alert("图文详情不能为空，至少上传一张。。");
+                return;
+            }
+            var imageFourJson = imgTableToJson("phototab_four");
+            if (content.length == 0) {
+                alert("正文内容不能为空");
+                return;
+            }
+            if (content.length > 10000) {
+                alert("正文内容已超出10000个字符！");
+                return;
+            }
+            $.ajax({
+                url: submit_url,
+                type: "POST",
+                data: {
+                    categoryId: categoryId,
+                    subCategoryId: subCategoryId,
+                    goodsName: goodsName,
+                    thumbnailImage: imgUrl1,
+                    specification: content,
+                    details: goodsIntro,
+                    saveStatus: 1,
+                    imageTwoJson: imageTwoJson,
+                    imageFourJson: imageFourJson,
+                    attributeJson: attributeJson,
+                    tid: null
+                },
+                success: function (data) {
+                    if (data.code == 1) {
+                        alert(data.message);
+                        $("#tid").val(data.object.tid);
+                        var url = "goodsPutOffList.html";
+                        window.location.href = url;
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            });
+        });
+    });
+
+</script>
+<body>
+<section>
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="span1">
+                <span class="badge badge-info">未上架商品   &gt; 添加商品</span>
+            </div>
+            </br>
+            <div class="row">
+                <div class="lfloat left-content" style="width:126px">
+                    <ul id="nav">
+                        <li class="bb" id="tb_1" onClick="x:hoverli(1);">基本信息</li>
+                        <li class="aa" id="tb_2" onClick="i:hoverli(2);">主要信息</li>
+                        <li class="aa" id="tb_3" onClick="x:hoverli(3);">图文详情</li>
+                        <li class="aa" id="tb_4" onClick="x:hoverli(4);">规格参数</li>
+                    </ul>
+                </div>
+                <div class="lfloat col-sm-9 right-content">
+                    <div id="newinfo">
+                        <div class="ctt list2">
+                            <input type="hidden" id="tid"/>
+                            <div class="dis" id="tbc_01">
+                                <div id="one_div">
+                                    <div class="row">
+                                        <div class="form-group col-sm-3">
+                                            <label class="col-sm-5 control-label" for="goodsBrief">一级分类:</label>
+                                            <div class="col-sm-7">
+                                                <select id="_categoryId" style="WIDTH: 145px" data-rule="required;">
+                                                    <option value="">请选择</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-3">
+                                            <label class="col-sm-5 control-label" for="goodsBrief">二级分类:</label>
+                                            <div class="col-sm-7">
+                                                <select id="_subCategoryId" style="WIDTH: 145px" data-rule="required;">
+                                                    <option value="">请选择</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="form-group col-sm-3">
+                                            <label class="col-sm-5 control-label" for="goodsBrief">商品名称:</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" id="_goodsName" class="form-control"
+                                                       style="width:400px;" maxlength="30"
+                                                       data-rule="required;stringCheck;"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <input type="button" value="下一步" class="btn btn-success"
+                                               onClick="i:hoverli(2);">
+                                        <a href="goodsPutOffList.html" class="btn btn-info">取消</a>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="undis" id="tbc_02">
+                                <div id="two_div">
+                                    <div class="row">
+                                        <div class="form-group col-sm-3">
+                                            <label class="col-sm-5 control-label" for="goodsBrief">列表图片:</label>
+                                            <div class="col-sm-7">
+                                                <input type="hidden" id="_photourl1" class="form-control"
+                                                       style="width:20px;"/>
+                                                <div>
+                                                    <img id="myImageShow1" src="">
+                                                    <div class="delete"></div>
+                                                </div>
+                                                <div>
+                                                    <input id="uploadPhotoFile_1" name="photoFile" class="photoFile"
+                                                           type="file" file_type="1" upload_type="13" file_length="10"
+                                                           file_sort="1"/>
+                                                </div>
+                                                <input style="width:500px;" disabled="disabled"
+                                                       placeholder="建议图片尺寸500*500px" id="j_logoUrl1"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 				    <div class="box-body table-responsive">
+                                                              <table id="phototab_one" class="tab2">
+                                                                  <thead>
+                                                                      <tr>
+                                                                           <th width="30">预览</th>
+                                                                           <th width="30">名称</th>
+                                                                           <th width="30">大小</th>
+                                                                           <th width="30">操作</th>
+                                                                      </tr>
+                                                                  </thead>
+                                                                  表格内容 start
+                                                                  <tbody id="mycontentList_one"></tbody>
+                                                                  表格内容 end
+                                                              </table>
+                                                      </div>
+                                                     </br>
+                                                          </br> -->
+                                    <div class="row">
+                                        <div class="form-group col-sm-3">
+                                            <label class="col-sm-5 control-label" for="goodsBrief">商品主图:</label>
+                                            <div class="col-sm-7">
+                                                <div>
+                                                    <input id="uploadPhotoFile_2" name="photoFile" class="photoFile"
+                                                           type="file" file_type="1" upload_type="14" file_length="10"
+                                                           file_sort="2"/>
+                                                </div>
+                                                <input style="width:500px;" disabled="disabled"
+                                                       placeholder="建议图片尺寸900*1600px" id="j_logoUrl1"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="box-body table-responsive">
+                                        <table id="phototab_two" class="tab2">
+                                            <thead>
+                                            <tr>
+                                                <th width="30">预览</th>
+                                                <th width="30">名称</th>
+                                                <th width="30">大小</th>
+                                                <th width="30">操作</th>
+                                            </tr>
+                                            </thead>
+                                            <!-- 表格内容 start -->
+                                            <tbody id="mycontentList_two"></tbody>
+                                            <!-- 表格内容 end -->
+                                        </table>
+                                    </div>
+                                    </br>
+                                    </br>
+                                    </br>
+                                    <div class="col-xs-12" id="listdiv">
+                                        <div class="box">
+                                            <input type="hidden" id="currentModel" value=artstudio/>
+                                            <form id="search_form" class="form-inline">
+                                                <div class="row">
+                                                    <div class="form-group col-sm-3">
+                                                        <label class="col-sm-5 control-label"
+                                                               for="goodsBrief">商品属性:</label>
+                                                        <div class="col-sm-5">
+                                                            <input class="form-control input-sm" type="text"
+                                                                   id="search_attributeName" placeholder="请输入商品属性名称"
+                                                                   maxlength="20"
+                                                                   onkeydown="if(event.keyCode==13)return false;"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-sm-3">
+                                                        <input type="button" value="搜索" id="search"
+                                                               class="btn btn-primary">
+                                                    </div>
+                                                    </br>
+                                                </div>
+                                            </form>
+
+                                            <div class="box-body table-responsive">
+                                                <table id="example2" class="tab2">
+                                                    <thead>
+                                                    <tr>
+                                                        <th width="15">选择</th>
+                                                        <th width="30">编号</th>
+                                                        <th width="30">属性</th>
+                                                        <th width="30">属性值</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <!-- 表格内容 start -->
+                                                    <tbody id="mycontentpage"></tbody>
+                                                    <!-- 表格内容 end -->
+                                                </table>
+                                                <!-- 分页标签 start -->
+                                                <div class="row col-sm-8" id="mydisplayPage"></div>
+                                                <!-- 分页标签 end -->
+                                                <script id="tableContentTmple" type="text/x-jsrender">
+                									<tr>
+                									<td><input id="ck_{{:tid}}" name="radioTid" type="radio" onclick="radiorow('{{:tid}}')" /></td>
+                									<td>{{:tid}}</td>
+                									<td>{{:attributeName}}</td>
+                									<td>{{:attributeValue}}</td>
+                								    </tr>
+
+
+                                                </script>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="box-body table-responsive">
+                                            <table id="attributeList" class="tab2">
+                                                <thead>
+                                                <tr>
+                                                    <th width="30">名称</th>
+                                                    <th width="15">库存</th>
+                                                    <th width="10">售价(￥)</th>
+                                                    <th width="20">图片</th>
+                                                    <th width="20">操作</th>
+                                                </tr>
+                                                </thead>
+                                                <!-- 表格内容 start -->
+                                                <tbody id="mycontentList_three"></tbody>
+                                                <!-- 表格内容 end -->
+                                            </table>
+                                            <script id="attributeListheaddetail" type="text/x-jsrender">
+                								<tr>
+                									<td style="width:80px;">{{:attributeValue}}</td>
+                									<td><input type="text"  class="form-control" style="width:80px;" onkeyup="value=value.replace(/[^\d.]/g,'')" /></td>
+                									<td><input type="text"  class="form-control"  style="width:80px;" onkeyup="value=value.replace(/[^\d.]/g,'')" /></td>
+                									<td><input   id="input_1_{{:tid}}" style='display:none' value="" /><img id="src_1_{{:tid}}" width='60px'; height='40px';/><input id="uploadPhotoFile_1_{{:tid}}" value="{{:tid}}" name="photoFile" class="photoFile" type="file" file_type="1"  upload_type="15"  file_length="10"  file_sort="3" /></td>
+                									<td><input onclick='deleteRowthree(this)' type='button'  value='删除'></input></td>
+                									<td style="display:none">{{:tid}} </td>
+                								</tr>
+
+
+                                            </script>
+                                        </div>
+                                    </div>
+                                    </br>
+                                </div>
+                                <div>
+                                    <input type="button" value="下一步" class="btn btn-success" onClick="i:hoverli(3);">
+                                    <a href="goodsPutOffList.html" class="btn btn-info">取消</a>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                        <div class="undis" id="tbc_03">
+                            <div id="three_div">
+                                <div class="row">
+                                    <div class="form-group col-sm-3">
+                                        <label class="col-sm-5 control-label" for="goodsBrief">商品介绍:</label>
+                                        <div class="col-sm-7">
+							<textarea id="_goodsintro" style="width: 650px;height:180px;"
+                                      onkeydown="checkMaxInput(this,100)"
+                                      onkeyup="checkMaxInput(this,100)" onfocus="checkMaxInput(this,100)"
+                                      onblur="checkMaxInput(this,100);resetMaxmsg()"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="form-group col-sm-3">
+                                <label class="col-sm-5 control-label" for="goodsBrief">图文详情:</label>
+                                <div class="col-sm-7">
+                                    <div>
+                                        <input id="uploadPhotoFile_4" name="photoFile" class="photoFile"
+                                               type="file" file_type="1" upload_type="4" file_length="10"
+                                               file_sort="4"/>
+                                    </div>
+                                    </input><input style="width:500px;" disabled="disabled"
+                                                   placeholder="建议图片尺寸500*500px" id="j_logoUrl1"/>
+                                </div>
+                            </div>
+                        </div>
+                        <input onclick='deleteRowall()' type='button' value='删除'>
+                        <div class="box-body table-responsive">
+                            <table id="phototab_four" class="tab2">
+                                <thead>
+                                <tr>
+                                    <th width="30">预览</th>
+                                    <th width="30">名称</th>
+                                    <th width="30">大小</th>
+                                    <th width="30">操作</th>
+                                </tr>
+                                </thead>
+                                <!-- 表格内容 start -->
+                                <tbody id="mycontentList_four"></tbody>
+                                <!-- 表格内容 end -->
+                            </table>
+                        </div>
+                        </br>
+                        </br>
+                        </br>
+                        <div>
+                            <input type="button" value="下一步" class="btn btn-success" onClick="i:hoverli(4);">
+                            <a href="goodsPutOffList.html" class="btn btn-info">取消</a>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+                <div class="undis" id="tbc_04">
+                    <div id="four_div">
+                        <div class="row">
+                            <div class="form-group col-sm-3">
+                                <label class="col-sm-5 control-label" for="goodsBrief">规格参数:</label>
+                                <div class="col-sm-7">
+                                            <textarea id="myEditor" style="width:800px;height:300px;"
+                                                      data-rule="required;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div>
+                            <input type="button" value="提交上架" class="btn btn-success" id="releaseData">
+                            <input type="button" value="保存" class="btn btn-success" id="saveData">
+                            <a href="goodsPutOffList.html" class="btn btn-info">取消</a>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

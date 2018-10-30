@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="js/validate.extend.js"></script>
+	<script type="text/javascript">
+
+	/*	$().ready(function() {
+	jQuery.validator.addMethod("isZipCode", function(value, element) {   
+    var tel = /`~!@#$^&*()=|{}':;',\\[\\].<>?~！@#￥……&*（）——|{}【】‘；：”“'。，、？/;
+    return this.optional(element) || (tel.test(value));
+		
+}, "请正确填写您的邮政编码");
+	// 提交时验证表单
+	var validator = $("#form-login").validate({
+		errorPlacement: function(error, element) {
+			// Append error within linked label
+			$( element )
+				.closest( "form" )
+					.find( "label[for='" + element.attr( "id" ) + "']" )
+						.append( error );
+		},
+		  rules: {
+            firstname: {
+                isZipCode: true,       
+            }
+		  },
+		errorElement: "span",
+		messages: {
+			firstname:{
+				isZipCode:"不能输入特殊字符",						 
+			}
+										 
+		}
+	});*/
+		$(function(){
+
+		$("#form-login").validate({
+		/*	errorPlacement: function(error, element) {
+			// Append error within linked label
+			$( element )
+				.closest( "form" )
+					.find( "label[for='" + element.attr( "id" ) + "']" )
+						.append( error );
+		},*/
+			rules:{
+				firstname:{
+					isZipCode:true
+				}
+			},
+			// errorElement: "span",
+	/*		messages:{
+				firstname:{
+					isZipCode:"求请输入邮政编码",
+				}
+			}*/
+			
+		});
+
+
+		})
+		
+	</script>
+</head>
+<body>
+	<form id="form-login">
+	<input type="text" name="firstname" id="firstname" >
+	</form>
+</body>
+</html>

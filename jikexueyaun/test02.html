@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+</head>
+<script type="text/javascript">
+	var dataArray = [];
+	$(function(){
+var goodItem = new Object();
+	goodItem.id = 1;
+	goodItem.name = "111"
+	dataArray.push(goodItem);
+
+	var goodItem1 = new Object();
+	goodItem1.id = 2;
+	goodItem1.name = "111"
+	dataArray.push(goodItem1);
+	console.log(dataArray);
+	
+	$(".delData").click(function(event) {
+		/* Act on the event */
+		for (var i = 0; i < dataArray.length; i++) {
+		if (dataArray[i].id==2) {
+			dataArray.splice(i,1);
+		}
+	}	
+	console.log(dataArray);
+	});
+
+
+
+})
+	
+</script>
+<body>
+	<button class="delData">del</button>
+	<input type="check" checked="false" name="">
+</body>
+</html>

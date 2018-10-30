@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+	</head>
+	<script type="text/javascript">
+			var btn1 = document.getElementById("button01");
+			//事件冒泡
+			// function addHandler(){
+			// 	if(btn1.addEventListener){
+			// 		btn1.addEventListener("click",alertMsg,false);
+			// 	}else if(btn1.attachEvent){
+			// 		btn1.attachEvent("onclick",alertMsg);
+			// 	}else{
+			// 		btn1.onclick = alertMsg;
+			// 	}
+			// }
+			
+			function alertMsg(){
+				console.log(event.type);
+				event.preventDefault(); 		
+				console.log("msg");	
+				event.preventDefault();//取消默认行为，比如a标签，不再跳转
+				event.stopPropagation();
+			}
+			// addHandler();
+
+			$(function(){
+				// $("#button01").click(function(event){
+				// 	console.log("button01");
+				// 	event.stopPropagation();
+				// })
+				$("body").click(function(event){
+					console.log("body");
+				})
+				$("#content").click(function(event){
+					console.log("content div");
+				})
+			})
+			function logoMessage(){
+				console.log("1111");
+				console.log(this.event);
+				// this.event.stopPropagation();
+				return false;
+			
+			}
+	</script>
+	<style type="text/css">
+		.blur {
+			-webkit-filter: blur(4px);filter: blur(4px);
+		}
+	</style>
+	<body>
+		<div id="content">
+		<input  id="button01"  type="button" value="maopao" onclick="logoMessage()" />
+		<br/>
+		<img src="img/1.jpg" class="blur">
+		</div>
+
+	</body>
+</html>
