@@ -1,3 +1,5 @@
+// 构造函数继承
+
 /*
  function Animal(){
     this.species = "动物";
